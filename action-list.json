@@ -1,0 +1,42 @@
+{
+    "alias": "tr", 
+    "toolName": "TimeTracker", 
+    "actions": [
+        {
+            "name": "t", 
+            "description": "'track' - Begin tracking current project. Available Option:\n\nname:\t\t'Name of project', creates a new project. If it includes spaces, be sure to encapsulate in quotes\nuse:\t\tvalue is list number, switches 'current' project to that list item and starts tracking\n"
+        }, 
+        {
+            "name": "u", 
+            "description": "'untrack' - Stop tracking current project"
+        }, 
+        {
+            "name": "l", 
+            "description": "'list' - offers a selectable list; used for switching between existing projects\n\n\n=======================================\n\n"
+        }, 
+        {
+            "name": "show", 
+            "description": "Show tracking Info"
+        }, 
+        {
+            "name": "go", 
+            "description": "launches a summary doc (html)"
+        }, 
+        {
+            "name": "-", 
+            "description": "'Run', Available Options:\n\nname:\t\t'The project name', create a new project, but don't start tracking\nuse:\t\tvalue is list number, switches 'current' project to that list item\n"
+        }, 
+        {
+            "name": "record", 
+            "description": "Open record in Visual Studio Code"
+        }, 
+        {
+            "name": "T", 
+            "description": "List all project times by date"
+        }, 
+        {
+            "name": "all", 
+            "description": ""
+        }
+    ]
+}

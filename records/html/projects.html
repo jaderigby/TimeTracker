@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="en-US">
+    <head>
+        <meta charset="utf-8" />
+        <link rel="stylesheet" type="text/css" href="css/wc-segments.lib.min.css" />
+        <link rel="stylesheet" type="text/css" href="css/main.css" />
+        <script src="js/segments.lib.js"></script>
+        <title>Timetracker View</title>
+    </head>
+    <body>
+        <panel-wrapper>
+            <panel-inner class="light">
+                <div class="clear-wrap rack with-dividers nav-elements">
+                    <a href="projects.html">
+                        <span>By Project</span>
+                    </a>
+                    <a href="dates.html">
+                        <span>By Date</span>
+                    </a>
+                </div>
+                <h1 class="page-title">TimeTracker:<span class="sub focal-color">Projects</span></h1>
+                <div id="detailModal" class="modal window">
+                    <div>
+                        <h2 class="center-justify"><span class="sub">Project:</span> <span class="focal-color" id="projectName"></span></h2>
+                        <table id="dates" class="label-set">
+                            <colgroup>
+                                <col width="42%" />
+                                <col />
+                            </colgroup>
+                            <tbody></tbody>
+                            <tfoot></tfoot>
+                        </table>
+                    </div>
+                </div>
+                <table id="projects">
+                    <colgroup>
+                        <col width="2%" />
+                        <col width="12%" />
+                        <col />
+                    </colgroup>
+                    <thead>
+                        <tr>
+                            <th class="center-justify">Item</th>
+                            <th class="center-justify">Total Time</th>
+                            <th>Project</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                    <tfoot>
+                        <tr>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </panel-inner>
+        </panel-wrapper>
+        <script src="../record.js"></script>
+        <script src="js/TweenMax.min.js"></script>
+        <script src="js/main.js"></script>
+        <script>
+            mark_current();
+
+            function addOrderValue() {
+                const projectList = Object.keys(data.projects);
+                const objectsToBeOrdered = [];
+
+                projectList.forEach(function(_proj_) {
+                    tempObj = {}
+                    tempObj['project'] = _proj_;
+                    tempObj['date'] = data['projects'][_proj_]['time'][0]['end'];
+                    objectsToBeOrdered.push(tempObj);
+                });
+
+                objectsToBeOrdered.sort((a,b) =>  new Date(b.date) - new Date(a.date));
+
+                objectsToBeOrdered.reverse().forEach(function(_proj_, _index_) {
+                    data.projects[_proj_.project]['order'] = _index_ + 1;
+                });
+            }
+
+            addOrderValue();
+
+            let s = '';
+            let total = '0:00';
+
+            function addTime(VAL1, VAL2) {
+                let hrsTotal = 0;
+                let minsTotal = 0;
+                let mins = 0;
+
+                function getHours() {
+                    hrsTotal = parseInt(VAL1.split(':')[0]) + parseInt(VAL2.split(':')[0]);
+                    let irregularMins = parseInt(VAL1.split(':')[1]) + parseInt(VAL2.split(':')[1]);
+
+                    hrsFromMins = parseInt(irregularMins / 60);
+
+                    return hrsTotal + hrsFromMins;
+                }
+
+                function getMins() {
+                    let irregularMins = parseInt(VAL1.split(':')[1]) + parseInt(VAL2.split(':')[1])
+
+                    hrsFromMins = parseInt(irregularMins / 60);
+
+                    let calculatedMins = irregularMins - (hrsFromMins * 60);
+
+                    formattedMins =  calculatedMins < 10 ? '0' + calculatedMins : calculatedMins;
+
+                    return formattedMins;
+                }
+
+                return {
+                    hr: getHours,
+                    min: getMins
+                }
+            }
+
+            projList = Object.keys(data.projects)
+
+            projList.sort();
+
+            projList.forEach(function(_item_) {
+                let a = '';
+                total = '0:00';
+                // console.log(data.projects[_item_].time);
+                data.projects[_item_].time.forEach( function(_time_) {
+                    let vals = addTime(total, _time_.spent);
+                    total = `${vals.hr()}:${vals.min()}`;
+                });
+                a = `<tr><td class="center-justify">${data.projects[_item_].order}</td><td class="right-justify right-padding focal-color stronger">${total}</td><td class="modal trigger" data-target="detailModal" data-project="${_item_}">${_item_}</td></tr>`;
+                _$('#projects tbody').append(a);
+            });
+
+            _$('[data-target').click(function(e) {
+                let n = '';
+                const timeList = [];
+                const dateList = [];
+                const dateTotals = [];
+
+                const projectName = _$(e.target).attr('data-project');
+                _$('#projectName').vanilla.innerHTML = projectName;
+
+                data.projects[projectName].time.forEach(function(_time_) {
+                    const newObj = {};
+                    newObj['time'] = _time_.spent;
+                    newObj['date'] = _time_.spent_date;
+                    timeList.push(newObj);
+                });
+
+                timeList.forEach(function(_item_) {
+                    dateList.push(_item_.date);
+                });
+
+                const uniqueDateList = [...new Set(dateList)];
+
+                uniqueDateList.forEach(function(_date_) {
+                    let total = '0:00';
+                    timeList.forEach(function(_item_) {
+                        if (_item_.date === _date_) {
+                            timeObj = addTime(total, _item_.time);
+                            total = `${timeObj.hr()}:${timeObj.min()}`;
+                        }
+                    });
+                    const newDateObj = {};
+                    newDateObj['date'] = _date_;
+                    newDateObj['time'] = total;
+                    dateTotals.push(newDateObj);
+                });
+
+                let dateStr = '';
+
+                const sortedDateTotals = dateTotals.reverse();
+
+                dateTotals.forEach(function(_dateItem_) {
+                    const calInfo = calendar_label(_dateItem_.date);
+                    dateStr += `<tr><td><em><span class="byProject-detail-dayOfWeek">${calInfo.day},</span></em> ${_dateItem_.date}</td><td>${_dateItem_.time}</td></tr>`;
+                });
+
+                _$('#dates tbody').vanilla.innerHTML = dateStr;
+            });
+
+        </script> 
+    </body>
+</html>

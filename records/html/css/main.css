@@ -1,0 +1,518 @@
+html,
+body,
+div,
+span,
+applet,
+object,
+iframe,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+a,
+abbr,
+acronym,
+address,
+big,
+cite,
+code,
+del,
+dfn,
+em,
+img,
+ins,
+kbd,
+q,
+s,
+samp,
+small,
+strike,
+strong,
+sub,
+sup,
+tt,
+var,
+dl,
+dt,
+dd,
+ol,
+ul,
+li,
+fieldset,
+form,
+label,
+legend,
+table,
+caption,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+td {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    outline: 0;
+    font-weight: inherit;
+    font-style: inherit;
+    font-family: inherit;
+    font-size: 100%;
+    vertical-align: baseline;
+}
+body {
+    line-height: 1;
+}
+ol,
+ul {
+    list-style: none;
+}
+table {
+    border-collapse: separate;
+    border-spacing: 0;
+    vertical-align: middle;
+}
+caption,
+th,
+td {
+    text-align: left;
+    font-weight: normal;
+    vertical-align: middle;
+}
+a img {
+    border: none;
+}
+body {
+    font-family: Helvetica Neue, arial, verdana, sans-serif;
+    font-weight: 300;
+    background-color: #444;
+}
+panel-wrapper {
+    background-color: #fff;
+}
+.left-justify {
+    text-align: left !important;
+}
+.center-justify {
+    text-align: center !important;
+}
+.right-justify {
+    text-align: right !important;
+}
+.center {
+    margin: 0 auto;
+}
+.left {
+    float: left;
+}
+.right {
+    float: right;
+}
+h1 {
+    font-size: 3.3rem;
+    padding: 25px 0;
+    line-height: 1.15;
+}
+h2 {
+    padding: 20px 0;
+    font-size: 2.5rem;
+}
+h3 {
+    padding: 15px 0;
+    font-size: 1.9rem;
+}
+h4 {
+    font-size: 1.6rem;
+}
+h5 {
+    font-size: 0.83rem;
+}
+h6 {
+    font-size: 0.67rem;
+}
+h4,
+h5 {
+    line-height: 1.3;
+}
+table {
+    border-collapse: separate;
+    border-spacing: 0;
+    vertical-align: middle;
+}
+table {
+    width: 100%;
+    margin-bottom: 30px;
+}
+table th {
+    color: #fff;
+    font-weight: 700;
+    background-color: #505050;
+}
+table th,
+table td {
+    padding: 8px;
+}
+table tr.mark td {
+    border-left: 1px solid #bababa;
+    border-right: 1px solid #bababa;
+}
+table tr.mark td:first-child {
+    border-left: 1px solid #fff;
+}
+table tr.mark td:last-child {
+    border-right: 1px solid #fff;
+}
+table thead th {
+    color: #fff;
+    background-color: #505050;
+    border: 1px solid #fff;
+}
+table thead {
+    background-color: #444;
+}
+table thead th.active-header {
+    cursor: pointer;
+}
+table tbody td {
+    height: 15px;
+    border: 1px solid #fff;
+}
+table tbody tr:nth-child(odd) {
+    background-color: #f2f2f2 /* EFEFEF */;
+}
+table tbody tr:nth-child(even) {
+    background-color: #dadada /* DDDDDD */;
+}
+table tfoot,
+table tr.mark {
+    background-color: #505050 !important;
+}
+table .remove-item {
+    cursor: pointer;
+}
+table .title {
+    font-size: 1.1rem;
+}
+table .category-stat {
+    padding-right: 70px;
+}
+table#projects tr td:first-child {
+    color: #666666;
+}
+table#projects tr td:nth-child(2n) {
+    transition: all 1.27s ease-in-out;
+}
+table#projects tbody tr td:nth-child(3n):hover {
+    /* background-color: #99e1ff; */
+    background: rgb(57, 71, 77);
+    background: linear-gradient(90deg, rgba(153,225,255,1) 0%, rgba(153,245,255,1) 35%, rgba(125,237,247,1) 65%, rgba(111,205,255,1) 100%);
+    cursor: pointer;
+}
+table#projects tbody tr:hover {
+    background-color: rgb(181, 220, 237);
+}
+.nav-elements {
+    font-weight: bold;
+    z-index: 999;
+}
+a {
+    color: #009ad9;
+    text-decoration: none;
+}
+a span {
+    padding: 7px 7px 8px;
+    transition: all 0.21s ease-in-out;
+    border-radius: 4px;
+}
+a.active span {
+    color: #fff;
+    background-color: #009ad9;
+}
+a.active:hover span {
+    background-color: #009ad9;
+}
+a:hover span {
+    background-color: #f1f1f1;
+}
+.sub {
+    display: inline-block;
+    margin-left: 10px;
+    font-size: 0.7em;
+}
+.focal-color {
+    color: rgb(74 106 114);
+}
+.project-name {
+    width: 36%;
+}
+
+.modal.window {
+    max-height: 77%;
+    overflow: auto;
+    bottom: 0;
+  }
+  .close-modal-icon {
+    position: absolute;
+    top: 7px;
+    right: 7px;
+    color: #00a0b5;
+    font-size: 1.4rem;
+    cursor: pointer;
+  }
+  .modal.trigger {
+    cursor: pointer;
+  }
+
+  #overlay.active {
+      top: 0;
+      opacity: 1;
+  }
+
+  #overlay {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.45);
+    opacity: 0;
+    z-index: 9998;
+    transition: all 0.28s;
+  }
+
+  #modalViewport {
+    display: none; position: fixed; width: 100%; height: 100%; z-index: 9999
+  }
+
+  .modal.window {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+    padding: 20px;
+    width: 84%;
+    max-width: 710px;
+    background-color: #FFF;
+    transform: scale(0.6);
+    opacity: 0
+  }
+
+  .project-tile {
+    position: relative;
+    /* display: inline-block; */
+    /* margin: 10px 20px 10px 0; */
+    margin: 10px 5px 10px 0;
+    padding: 15px;
+    /* width: 260px; */
+    min-height: 40px;
+    color: #fdfdfd;
+    background-color: #73848d; /* b1b8bb, b3bdc1, 748891, 73848d */
+    border-radius: 4px;
+    box-shadow: 0 0 15px rgba(11, 42, 50, 0.32);
+  }
+
+  .project-tile .project-title {
+    position: relative;
+    font-size: 1.1rem;
+    z-index: 2;
+  }
+
+  .project-tile .project-time {
+    margin-top: 11px;
+    font-weight: bold;
+    font-size: 1.9rem;
+    color: #afc6d5; /* c5dbe9, afc6d5, bdd4e3 */
+    position: absolute;
+    bottom: 4px;
+    right: 10px;
+  }
+
+#byDate tr td:first-child {
+    font-size: 1.45rem;
+}
+
+.right-padding {
+    padding-right: 20px;
+}
+
+.tile-group-padding {
+    padding-left: 20px;
+    padding-right: 15px;
+}
+
+.stronger {
+    font-weight: bold;
+}
+
+table.label-set tr td:first-child {
+    text-align: right;
+    padding-right: 15px;
+}
+
+table.label-set tr td:nth-child(2n) {
+    font-weight: bold;
+    padding-left: 15px;
+}
+
+table.label-set tr:nth-child(odd) td:nth-child(2n) {
+    background-color: #e0edf5;
+}
+
+table.label-set tr:nth-child(even) td:nth-child(2n) {
+    background-color: #c9d9e3;
+}
+
+#dates {
+    margin: 30px auto 0;
+    width: 80%;
+}
+
+.project-tile {
+    transition: all 0.17s ease-in-out;
+    cursor: pointer;
+}
+
+.project-tile.fade-back {
+    opacity: 0.6;
+}
+
+.project-tile.active {
+    transform: scale(1.1);
+}
+
+[data-projectName] {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 10;
+}
+
+
+
+
+table.label-set tr:nth-child(odd) {
+    background-color: #d3e1e7;
+}
+
+table.label-set tr:nth-child(even) {
+    background-color: #bbcad1;
+}
+
+table.label-set tr:nth-child(odd) td:nth-child(2n) {
+    background-color: #c5dce5;
+}
+
+table.label-set tr:nth-child(even) td:nth-child(2n) {
+    background-color: #afc9d5;
+}
+
+table {
+    font-size: 1.05rem;
+}
+
+table#byDate tbody tr:nth-child(odd) td:nth-child(odd) {
+    background-color: #e1eef7;
+}
+
+table#byDate tbody tr:nth-child(even) td:nth-child(odd) {
+    background-color: #bfcdd7;
+}
+
+.byDate-date {
+    position: relative;
+}
+
+.byDate-month {
+    font-weight: 800;
+    font-size: 0.9rem;
+    opacity: 0.77;
+    margin-bottom: 3px;
+}
+
+.byDate-year {
+    position: absolute;
+    top: 4px;
+    left: 8px;
+    font-weight: 800;
+    font-size: 1.7rem;
+    margin-top: 8px;
+    opacity: 0.37;
+}
+
+.byProject-detail-dayOfWeek {
+    display: inline-block;
+    margin-right: 10px;
+}
+
+strong {
+    font-weight: 800
+}
+
+em {
+    font-style: italic;
+}
+
+h1.page-title {
+    padding-bottom: 10px;
+}
+
+.time-for-day-col {
+    position: relative;
+    width: 55px;
+}
+.time-for-day-col .time-for-day {
+    bottom: 4px;
+    padding-right: 8px;
+    text-align: right;
+    left: 8px;
+    font-weight: 800;
+    font-size: 1.3rem;
+    margin-top: 8px;
+    opacity: 0.23;
+}
+
+#totalTimeSelected {
+    font-size: 1.5rem;
+    color: white;
+}
+
+#totalTimeWrapper {
+    position: fixed;
+    top: 0;
+    margin: 0 auto;
+    width: 1200px;
+    height: 150px;
+    z-index: 20;
+    overflow: hidden;
+}
+
+#totalTimeSelected {
+    position: absolute;
+    right: 0;
+    top: 82px;
+    opacity: 0.5;
+    width: 110px;
+    height: 50px;
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: center;
+    align-items: center;
+    background-color: #000;
+    border-radius: 4px 0px 0px 4px;
+    transform: translateX(110px);
+    transition: all 0.21s ease-in-out;
+}
+
+#totalTimeSelected.active {
+    transform: translateX(0px);
+}
+
+.relative {
+    position: relative;
+}

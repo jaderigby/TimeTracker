@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en-US">
+    <head>
+        <meta charset="utf-8" />
+        <link rel="stylesheet" type="text/css" href="css/wc-segments.lib.min.css" />
+        <link rel="stylesheet" type="text/css" href="css/main.css" />
+        <script src="js/segments.lib.js"></script>
+        <script src="js/main.js"></script>
+        <title>Timetracker View</title>
+    </head>
+    <body>
+        <panel-wrapper>
+            <panel-inner class="light">
+                <div class="clear-wrap rack with-dividers nav-elements">
+                    <a href="projects.html">
+                        <span>By Project</span>
+                    </a>
+                    <a href="dates.html">
+                        <span>By Date</span>
+                    </a>
+                    <a href="weeks.html">
+                        <span>By Week</span>
+                    </a>
+                </div>
+                <h1>TimeTracker:<span class="sub">Weeks</span></h1>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Week</th>
+                            <th>Total hrs</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                    <tfoot>&nbsp;</tfoot>
+                </table>
+            </panel-inner>
+        </panel-wrapper>
+        <script src="../record.js"></script>
+        <script>
+            mark_current();
+
+            let s = '';
+            total = '0:00';
+
+            projList = Object.keys(data.projects)
+            projList.forEach(function(_item_) {
+                a = '';
+                total = '0:00';
+                data.projects[_item_].time.forEach( function(_time_) {
+                    let vals = addTime(total, _time_.spent);
+                    total = `${vals.hr()}:${vals.min()}`;
+                });
+                a = `<tr><td data-project="${_item_}">${_item_}</td><td>${total}</td></tr>`;
+                _$('tbody').append(a);
+            })
+
+            function addTime(VAL1, VAL2) {
+                let hrsTotal = 0;
+                let minsTotal = 0;
+                let mins = 0;
+
+                function getHours() {
+                    hrsTotal = parseInt(VAL1.split(':')[0]) + parseInt(VAL2.split(':')[0]);
+                    let irregularMins = parseInt(VAL1.split(':')[1]) + parseInt(VAL2.split(':')[1]);
+
+                    hrsFromMins = parseInt(irregularMins / 60);
+
+                    return hrsTotal + hrsFromMins;
+                }
+
+                function getMins() {
+                    let irregularMins = parseInt(VAL1.split(':')[1]) + parseInt(VAL2.split(':')[1])
+
+                    hrsFromMins = parseInt(irregularMins / 60);
+
+                    let calculatedMins = irregularMins - (hrsFromMins * 60);
+
+                    formattedMins =  calculatedMins < 10 ? '0' + calculatedMins : calculatedMins;
+
+                    return formattedMins;
+                }
+
+                return {
+                    hr: getHours,
+                    min: getMins
+                }
+            }
+        </script> 
+    </body>
+</html>
