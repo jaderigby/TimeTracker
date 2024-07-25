@@ -1,8 +1,6 @@
 import messages as msg
 import helpers
 
-from time import gmtime, strftime
-
 def execute(PROJECT):
 	record = helpers.load_record()
 
@@ -16,7 +14,7 @@ def execute(PROJECT):
 		return False
 
 	if verify_exists(PROJECT, record):
-		print "Switching to Project: {}".format(PROJECT)
+		print("Switching to Project: {}".format(PROJECT))
 		record['current'] = PROJECT
 
 		content = helpers.glue_updated_record(record)

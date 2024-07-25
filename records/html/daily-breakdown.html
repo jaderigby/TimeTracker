@@ -1,0 +1,446 @@
+<!doctype html>
+<html lang="en-US">
+    <head>
+        <meta charset="utf-8" />
+        <link rel="stylesheet" type="text/css" href="css/wc-segments.lib.min.css" />
+        <link rel="stylesheet" type="text/css" href="css/main.css" />
+        <script src="js/segments.lib.js"></script>
+        <title>Timetracker View</title>
+    </head>
+    <body>
+        <panel-wrapper>
+            <panel-inner class="light relative">
+                <div id="totalTimeWrapper">
+                    <div id="totalTimeCapsule">
+                        <div id="totalTimeSelected"></div>
+                    </div>
+                </div>
+                <div class="clear-wrap rack with-dividers nav-elements relative">
+                    <a href="dates.html">
+                        <span>By Date</span>
+                    </a>
+                    <a href="daily-breakdown.html">
+                        <span>By Time</span>
+                    </a>
+                    <a href="projects.html">
+                        <span>By Project</span>
+                    </a>
+                    <a href="categories.html">
+                        <span>By Category</span>
+                    </a>
+                </div>
+                <h1 class="page-title">TimeTracker:<span class="sub focal-color">Time</span></h1>
+                <table id="byDate">
+                    <colgroup>
+                        <col width="22%" class="date-label" />
+                        <col />
+                    </colgroup>
+                    <thead>
+                        <tr>
+                            <th class="center-justify">Date</th>
+                            <th>Time</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                
+                            </td>
+                            <td>
+                                <div class="timeline"></div>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </panel-inner>
+        </panel-wrapper>
+        <script src="../record.js"></script>
+        <script src="js/TweenMax.min.js"></script>
+        <script src="js/main.js"></script>
+        <script>
+
+            console.log(data);
+
+            function group_by_date(OBJ) {
+                const dateList = [];
+                for ( const [_key_, _value_] of Object.entries(OBJ) ) {
+                    console.log("============================");
+
+                    _value_.time.forEach( (_time_) => {
+                        const newObj = {};
+                        newObj.project = _key_;
+                        newObj.date = _time_.spent_date;
+                        newObj.time = _time_.spent;
+                        console.log(newObj);
+                        // if (date not already in list) {
+                        //     dateList.push(newObj);
+                        // }
+                        // else {
+                        //     dateList.push(_currentDate_.newObj);
+                        // }
+                    });
+                }
+                    
+            }
+
+            group_by_date(data.projects);
+
+
+
+
+
+
+
+
+
+            // function order_dates(LIST) {
+            //     const dateList = [];
+            //     LIST.forEach( (_date_) => {
+            //         dateList.push(_date_);
+            //     });
+            // }
+
+            // function get_dates(OBJECT) {
+            //     const dateList = [];
+
+            //     for ( const [key, value] of Object.entries(OBJECT) ) {
+            //         OBJECT[key].time.forEach( (_timeItem_) => {
+            //             dateList.push(_timeItem_.spent_date);
+            //         });
+            //     }
+
+            //     uniqueDateList = [...new Set(dateList)];
+                
+            //     const orderedDateList = order_dates(uniqueDateList);
+
+            //     return ;
+            // }
+
+            // function group_by_date(OBJECT) {
+            //     const dates = get_dates(OBJECT);
+            //     console.log(dates);
+            //     dates.forEach( (_date_) => {
+            //         const newObj = {};
+
+            //         newObj.times = ( () => {
+
+            //         })();
+            //     });
+            // }
+
+            // const groupedByDate = group_by_date(data.projects);
+
+
+
+
+
+
+
+
+
+
+
+
+
+            // mark_current();
+
+            // const date = new Date();
+            // const monthDate = date.getMonth() + 1;
+            // const dayDate = date.getDate();
+            // const today = `${date.getFullYear()}-${(monthDate < 10) ? '0' + monthDate : monthDate}-${(dayDate < 10) ? '0' + dayDate : dayDate}`;
+            // const currHours = date.getHours();
+            // const currTime = `${(currHours < 10) ? '0' + currHours : currHours}:${(date.getMinutes() < 10) ? '0' + date.getMinutes() : date.getMinutes()}`;
+
+            // // def time_spent(START, END):
+            // //     startFormat = datetime.strptime(START, '%Y-%m-%d %H:%M')
+            // //     endFormat = datetime.strptime(END, '%Y-%m-%d %H:%M')
+            // //     spent = endFormat - startFormat
+            // //     timeFormatted = str(spent)[:-3]
+            // //     return timeFormatted
+            
+            // function findTimeSpent(START, END) {
+            //     const startElem = START.split(':');
+            //     const endElem = END.split(':');
+            //     const s = `${parseInt(endElem[0]) - parseInt(startElem[0])}:${parseInt(endElem[1]) - parseInt(startElem[1])}`;
+            //     return s;
+            // }
+
+            // function timeSpent(START, END) {
+            //     const startTime = START.replace(/[0-9]{4}\-[0-9]{2}\-[0-9]{2}\ /g, '');
+            //     const endTime = END.replace(/[0-9]{4}\-[0-9]{2}\-[0-9]{2}\ /g, '');
+            //     const calculatedTime = findTimeSpent(startTime, endTime);
+            //     return calculatedTime;
+            // }
+
+            // data.projects[data.current].time.forEach(function(_time_) {
+            //     if (_time_.end == '') {
+            //         _time_.end = `${today} ${currTime}`;
+            //         _time_.spent_date = today;
+            //         _time_.spent = timeSpent(_time_.start, _time_.end);
+            //     }
+            // });
+
+            // function addTime(VAL1, VAL2) {
+            //     let hrsTotal = 0;
+            //     let minsTotal = 0;
+            //     let mins = 0;
+
+            //     function getHours() {
+            //         hrsTotal = parseInt(VAL1.split(':')[0]) + parseInt(VAL2.split(':')[0]);
+            //         let irregularMins = parseInt(VAL1.split(':')[1]) + parseInt(VAL2.split(':')[1]);
+
+            //         hrsFromMins = parseInt(irregularMins / 60);
+
+            //         return hrsTotal + hrsFromMins;
+            //     }
+
+            //     function getMins() {
+            //         let irregularMins = parseInt(VAL1.split(':')[1]) + parseInt(VAL2.split(':')[1])
+
+            //         hrsFromMins = parseInt(irregularMins / 60);
+
+            //         let calculatedMins = irregularMins - (hrsFromMins * 60);
+
+            //         formattedMins =  calculatedMins < 10 ? '0' + calculatedMins : calculatedMins;
+
+            //         return formattedMins;
+            //     }
+
+            //     return {
+            //         hr: getHours,
+            //         min: getMins
+            //     }
+            // }
+
+            // function get_day_total(LIST) {
+            //     let totalTime = '0:00';
+            //     let hrs = 0;
+            //     let irregularMins = 0;
+            //     LIST.forEach(function(_time_) {
+            //         breakdownTotalTime = totalTime.split(':');
+            //         breakdown_time_ = _time_.split(':');
+            //         const calcHrs = parseInt(breakdownTotalTime[0]) + parseInt(breakdown_time_[0]);
+            //         hrs += calcHrs;
+            //         const calcMins = parseInt(breakdownTotalTime[1]) + parseInt(breakdown_time_[1]);
+            //         irregularMins += calcMins;
+            //     });
+            //     let hrsFromMins = parseInt(irregularMins / 60);
+            //     hrs += hrsFromMins;
+            //     const mins = irregularMins - (60 * hrsFromMins);
+            //     const standardizedMins = (mins < 10) ? '0' + mins : mins;
+            //     totalTime = `${hrs}:${standardizedMins}`;
+            //     return totalTime;
+            // }
+
+            // //==================================
+
+            // const cleanProjectsByDateList = [];
+
+            // function sort_all_dates(DATA) {
+
+            //     // Creates a list of just the project names
+            //     const projectList = Object.keys(DATA.projects)
+
+            //     const timesList = [];
+            //     const dateList = [];
+            //     const consolidatedTimesList = [];
+            //     const dateTotals = [];
+
+            //     projectList.forEach(function(_project_) {
+            //         data.projects[_project_].time.forEach(function(_time_) {
+            //             const newObj = {};
+            //             newObj['date'] = _time_.spent_date;
+            //             newObj['time'] = _time_.spent || "00:00";
+            //             newObj['start'] = _time_.start;
+            //             newObj['end'] = _time_.end;
+            //             newObj['project'] = _project_;
+            //             timesList.push(newObj);
+            //             dateList.push(_time_.spent_date);
+            //             // console.log(dateList);
+            //         });
+            //     });
+
+            //     // Consolidates multiple instances of a date down to only one entry in the list
+            //     const uniqueDateList = [...new Set(dateList)];
+            //     const timesByDateList = [];
+
+            //     uniqueDateList.forEach(function(_date_) {
+            //         let total = '0:00';
+            //         const newObj = {};
+                    
+            //         const setList = [];
+            //         timesList.forEach(function(_item_) {
+            //             if (_item_.date === _date_) {
+            //                 setList.push(_item_);
+            //             }
+            //         });
+
+            //         // console.log("setList:", setList);
+
+            //         newObj[_date_] = setList;
+            //         timesByDateList.push(newObj);
+            //         // console.log(timesByDateList);
+            //     });
+
+            //     // const projectTotals = [];
+
+            //     timesByDateList.forEach(function(_date_) {
+            //        const currDate = Object.keys(_date_)[0];
+                                      
+            //        const projectList = [];
+
+            //         _date_[currDate].forEach(function(_item_) {
+            //             projectList.push(_item_.project);
+            //         });
+
+            //         const uniqueProjectList = [...new Set(projectList)];
+            //         const projectTimeList = [];
+            //         const dateProjectsObj = {};
+            //         const projectDateBreakdownList = [];
+
+            //         uniqueProjectList.forEach(function(_proj_) {
+            //             const newObj = {};
+            //             let total = '0:00';
+            //             const timesBreakdown = {};
+            //             const timesBreakdownList = [];
+
+            //             _date_[currDate].forEach(function(_item_) {
+            //                 if (_proj_ == _item_.project) {
+            //                     let vals = addTime(total, _item_.time);
+            //                     total = `${vals.hr()}:${vals.min()}`;
+            //                     timesBreakdown['start'] = _item_.start;
+            //                     timesBreakdown['end'] = _item_.end;
+
+            //                     // console.log(_item_);
+            //                 }
+            //             });
+            //             newObj['time'] = total;
+            //             newObj['project'] = _proj_;
+            //             newObj['times'] = timesBreakdown;
+            //             projectTimeList.push(newObj);
+            //             // projectDateBreakdownList.push(newObj);
+            //         });
+            //         dateProjectsObj['date'] = currDate;
+            //         dateProjectsObj['projects'] = projectTimeList;
+            //         // console.log(dateProjectsObj);
+            //         // dateProjectsObj['projectsByBreakdown'] = projectDateBreakdownList;
+
+            //         cleanProjectsByDateList.push(dateProjectsObj);
+            //         // console.log(dateProjectsObj);
+            //     });
+            // }
+
+            // sort_all_dates(data);
+
+            // function chrono_sort(LIST) {
+            //     const sortedList = [];
+            //     const listOfDates = [];
+            //     const elimList = LIST;
+
+            //     LIST.forEach(function(_item_) {
+            //         listOfDates.push(_item_['date']);
+            //     });
+
+            //     const orderDateList = listOfDates.sort().reverse();
+
+            //     orderDateList.forEach(function(_date_) {
+            //         for (i = 0; elimList.length; i++) {
+            //             if (_date_ == elimList[i].date) {
+            //                 sortedList.push(elimList[i]);
+            //                 elimList.splice(i, 1);
+            //                 break;
+            //             }
+            //         }
+            //     });
+
+            //     return sortedList;
+            // }
+
+            // function alpha_sort(LIST) {
+            //     const sortedList = [];
+            //     const listOfDates = [];
+            //     const elimList = LIST;
+
+            //     return sortedList;
+            // }
+
+            // const cleanAndSortedList = chrono_sort(cleanProjectsByDateList);
+
+            // let dateStr = '';
+
+            // cleanAndSortedList.forEach(function(_item_) {
+            //     let projStr = '';
+
+            //     _item_.date = _item_.date == '' ? today : _item_.date;
+                
+            //     // First, sort Alphabetically by project name
+            //     _item_.projects.sort(dynamicSort("project"));
+
+            //     const day = calendar_label(_item_.date).day;
+            //     const dayOfMonth = calendar_label(_item_.date).dayOfMonth;
+            //     const month = calendar_label(_item_.date).month;
+            //     const year = calendar_label(_item_.date).year;
+            //     const dayTotalList = [];
+
+            //     _item_.projects.forEach(function(_proj_) {
+            //         dayTotalList.push(_proj_.time);
+            //         projStr += `<x-cell><div class="project-tile"><div data-projectName="${_proj_.project}" data-time="${_proj_.time}"></div><div class="project-title">${_proj_.project}</div><div class="project-time">${_proj_.time}</div></div></x-cell>`
+            //     });
+            //     const timeForDay = get_day_total(dayTotalList);
+            //     dateStr += `<tr><td class="right-justify focal-color right-padding byDate-date"><div class="byDate-month">${month}</div><div><strong>${day}</strong> ${dayOfMonth}</div><div class="byDate-year">${year}</div></td><td class="tile-group-padding"><prime-segment class="vertical-center"><x-major><x-segment class="thirds">${projStr}</x-segment></x-major><x-minor class="time-for-day-col"><div class="time-for-day">${timeForDay}</div></x-minor></prime-segment></td></tr>`;
+            // });
+
+            // _$('#byDate tbody').vanilla.innerHTML = dateStr;
+
+            // _$('table#byDate tbody').delegate('[data-projectName]', 'click', function(e) {
+            //     if (_$(e.target.offsetParent).hasClass('active')) {
+            //         _$('[data-projectName]').items.forEach(function(_tile_) {
+            //             _$(_tile_.offsetParent).removeClass('active');
+            //             _$(_tile_.offsetParent).removeClass('fade-back');
+            //         });
+            //     }
+            //     else {
+            //         _$('[data-projectName]').items.forEach(function(_tile_) {
+            //             _$(_tile_.offsetParent).removeClass('active');
+            //             _$(_tile_.offsetParent).removeClass('fade-back');
+            //         });
+    
+            //         const projectTarget = _$(e.target).attr('data-projectName');
+    
+            //         _$('[data-projectName]').items.forEach(function(_item_) {
+            //             if (_$(_item_).attr('data-projectName') != projectTarget) {
+            //                 _$(_item_.offsetParent).addClass('fade-back');
+            //             }
+            //             else {
+            //                 _$(_item_.offsetParent).addClass('active');
+            //             }
+            //         });
+            //     }
+
+            //     const selectedTiles = _$('.project-tile.active').items;
+            //     let talliedTime = '0:00';
+            //     const timeList = [];
+            //     selectedTiles.forEach(function(_item_) {
+            //         const timeItem = _$(_item_).vanilla.children[0];
+            //         timeList.push(_$(timeItem).attr('data-time'));
+            //     });
+            //     totalTime = calculate_total_time(timeList);
+            //     _$('#totalTimeSelected').vanilla.innerHTML = totalTime;
+
+            //     if (totalTime !== '0:00') {
+            //         _$('#totalTimeSelected').addClass('active');
+            //     }
+            //     else {
+            //         _$('#totalTimeSelected').removeClass('active');
+            //     }
+            // });
+
+        </script> 
+    </body>
+</html>

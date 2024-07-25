@@ -11,6 +11,9 @@ import Run
 import Record
 import AllTimeByDate
 import AllTime
+import Status
+import Category
+import Archive
 # new imports start here
 
 # settings = helpers.get_settings()
@@ -46,13 +49,10 @@ elif action == "u":
 elif action == "test":
 	Test.execute()
 
-elif action == "show":
-	Show.execute()
-
 elif action == "l":
 	List.execute()
 
-elif action == "go":
+elif action == "show":
 	Summary.execute()
 
 elif action == "-":
@@ -66,4 +66,13 @@ elif action == "T":
 
 elif action == "all":
 	AllTime.execute()
+
+elif action == "status":
+	Status.execute()
+
+elif action == "c":
+	Category.execute()
+
+elif action == "archive":
+	Archive.execute()
 # new actions start here

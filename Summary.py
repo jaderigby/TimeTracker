@@ -12,6 +12,6 @@ def execute():
 
 	helpers.write_file('{}/html/js/record.js'.format(recordRoot), jsContent)
 
-	helpers.run_command('open {}/records/html/projects.html'.format(helpers.path('util')))
+	helpers.run_command('open {}/records/html/dates.html'.format(helpers.path('util')))
 
 	msg.done()

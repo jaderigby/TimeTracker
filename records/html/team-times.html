@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en-US">
+    <head>
+        <meta charset="utf-8" />
+        <link rel="stylesheet" type="text/css" href="css/wc-segments.lib.min.css" />
+        <link rel="stylesheet" type="text/css" href="css/main.css" />
+        <script src="js/segments.lib.js"></script>
+        <title>Timetracker View</title>
+    </head>
+    <body>
+        <panel-wrapper>
+            <panel-inner class="light relative">
+                <div id="totalTimeWrapper">
+                    <div id="totalTimeCapsule">
+                        <div id="totalTimeSelected"></div>
+                    </div>
+                </div>
+                <div class="clear-wrap rack with-dividers nav-elements relative">
+                    <a href="dates.html">
+                        <span>By Date</span>
+                    </a>
+                    <a href="daily-breakdown.html">
+                        <span>By Time</span>
+                    </a>
+                    <a href="projects.html">
+                        <span>By Project</span>
+                    </a>
+                    <a href="categories.html">
+                        <span>By Category</span>
+                    </a>
+                    <a class="active" href="team-times.html">
+                        <span>Team Times</span>
+                    </a>
+                </div>
+                <h1 class="page-title">TimeTracker:<span class="sub focal-color">Team Time Zones</span></h1>
+                <div id="times"></div>
+            </panel-inner>
+        </panel-wrapper>
+        <script src="../record.js"></script>
+        <script src="js/TweenMax.min.js"></script>
+        <script src="js/main.js"></script>
+        <script>
+            const opener = '<x-segment class="fourths">';
+            const closer = '</x-segment>';
+            let markUp = "";
+            const teamTimes = _$("#times");
+
+            function adjusted_time(elem) {
+                var now = new Date();
+                // now.format("hh:mm TT");
+                // const currTime = new date.
+                // switch (elem.timeZone) {
+                //     case 'eastern':
+                //         return now;
+                //         break;
+                //     case 'mountain':
+                //         return now;
+                //         break;
+                //     default: 
+                //         break;
+                // }
+                return now;
+            }
+            data.teamTimes.forEach((_item_) => {
+                markUp += `<x-cell><div class="time-item"><h3>${_item_.name}</h3></div><div>${adjusted_time(_item_)}</div></x-cell>`; 
+            });
+            _$("#times").vanilla.innerHTML = opener + markUp + closer;
+        </script> 
+    </body>
+</html>

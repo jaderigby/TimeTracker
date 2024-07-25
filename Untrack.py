@@ -30,6 +30,6 @@ def execute():
 			content = helpers.glue_updated_record(record)
 			helpers.write_file(helpers.recordPath, content)
 
-			msg.untracking_message(obj)
+			msg.untracking_message(current, obj)
 		else:
 			msg.nothing_being_tracked()

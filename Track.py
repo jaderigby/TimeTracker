@@ -24,6 +24,7 @@ def execute(ARGS):
 		#= find if current project has an unclosed time, ie, it's still tracking
 		for item in record['projects'][current]['time']:
 			if item['end'] == '':
+				print("yep")
 				openTracking = True
 				tempObj = item
 
@@ -85,19 +86,19 @@ def execute(ARGS):
 			msg.tracking_message(newItem, current)
 		
 		elif openTracking and newProject:
-			tempObj['end'] = markedTime
-			tempObj['spent'] = helpers.time_spent(tempObj['start'], tempObj['end'])
-			tempObj['spent_date'] = markedDate
+			# tempObj['end'] = markedTime
+			# tempObj['spent'] = helpers.time_spent(tempObj['start'], tempObj['end'])
+			# tempObj['spent_date'] = markedDate
 
 			newItem = helpers.new_time_obj(markedTime)
-			record['projects'][current]['time'].append(tempObj)
+			# record['projects'][current]['time'].append(tempObj)
 
 			content = helpers.glue_updated_record(record)
 			helpers.write_file(helpers.recordPath, content)
 
 			helpers.add_project(newProject)
 
-			msg.new_project_tracking(current, markedTime)
+			msg.new_project_tracking(newProject, markedTime)
 
 		elif newProject:
 			helpers.add_project(newProject)

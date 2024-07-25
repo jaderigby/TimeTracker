@@ -1,22 +1,36 @@
 import json, helpers
-
 import messages as msg
+from datetime import datetime
 
 def execute():
 	record = helpers.load_record()
+	datesListRaw = []
+
+	for item in record['projects']:
+		for time in record['projects'][item]['time']:
+			newDate = time['spent_date']
+			datesListRaw.append(newDate)
+	
+	datesList = list(set(datesListRaw))
+
+	while("" in datesList):
+		datesList.remove("")
+	
+	dateObjects = [datetime.strptime(date, '%Y-%m-%d') for date in datesList]
+	sortedDates = sorted(dateObjects)
+	datesListedOrdered = [date.strftime('%Y-%m-%d') for date in sortedDates]
 
 	while True:
-		projectSelection = msg.select_date_for_times(record)
+		datesListedOrderedAndFormatted = [helpers.format_date_w_day(date) for date in datesListedOrdered]
+		projectSelection = helpers.user_selection("Select: ", datesListedOrderedAndFormatted)
 
-		if projectSelection is 'x':
+		if projectSelection == 'exit':
 			break
 		else:
-			dates = helpers.compile_date_list(record)
-			chosenDate = dates[int(projectSelection) - 1]
-			newList = helpers.collect_projects_by_date(dates, record['projects'])
+			chosenDate = datesListedOrdered[int(projectSelection) - 1]
+			entries = helpers.get_chronological_entries(chosenDate, record['projects'])
 
-			msg.show_projects_for_date(newList, chosenDate)
+			msg.chrono_breakdown(chosenDate, entries)
+			break
 
-	print('''
-[Finished]
-''')
+	msg.done()

@@ -159,10 +159,13 @@ def glue_updated_record(RECORD):
 	return recordString
 
 def create_new_project(TIME):
+	record = load_record()
 	tempObj	 = {}
 	timeObj = {}
-	tempObj	['description'] = ""
-	tempObj	['time'] = []
+	tempObj['description'] = ""
+	tempObj['category'] = ""
+	tempObj['orderId'] = len(record['projects']) + 1
+	tempObj['time'] = []
 	timeObj['start'] = TIME
 	timeObj['end'] = ""
 	timeObj['spent'] = ""
@@ -171,7 +174,10 @@ def create_new_project(TIME):
 	return tempObj
 
 def add_a_description():
-	return raw_input("Please enter a description: ")
+	return user_input("Please enter a description: ")
+
+def handle_category():
+	return user_input("Category: ")
 
 def add_project(PROJECT):
 	record = load_record()
@@ -193,6 +199,7 @@ def add_project(PROJECT):
 		record['current'] = PROJECT
 		record['projects'][PROJECT] = create_new_project(recordedTime)
 		record['projects'][PROJECT]['description'] = add_a_description()
+		record['projects'][PROJECT]['category'] = handle_category()
 
 		content = glue_updated_record(record)
 		write_file(recordPath, content)
@@ -275,7 +282,8 @@ def select_project(OBJ, QUICK_SELECT=False):
 	for item in OBJ['projects']:
 		projectList.append(item)
 
-	sortedProjects = sort_projects_by_date(OBJ)
+	# sortedProjects = sort_projects_by_date(OBJ)
+	sortedProjects = sort_projects_by_sortId(OBJ)
 
 	#= Construct project info for message
 	for proj in sortedProjects:
@@ -315,11 +323,27 @@ def sort_projects_by_date(OBJ):
 	
 	return orderedProjects
 
-def get_project_by_number(OBJ, NUMBER):
-	keyList = dict.keys(OBJ['projects'])
+def sort_projects_by_sortId(OBJ):
+	orderedItems = sorted(OBJ['projects'].items(), key=lambda x: x[1]["orderId"])
+	orderedItemsNameOnly = sorted(item[0] for item in orderedItems)
 	objectsToBeOrdered = []
 
-	for item in keyList:
+	for item in orderedItemsNameOnly:
+		tempObj = {}
+		tempObj['project'] = item
+		if len(OBJ['projects'][item]['time']) != 0:
+			tempObj['date'] = OBJ['projects'][item]['time'][0]['end']
+		
+		objectsToBeOrdered.append(tempObj)
+
+	return objectsToBeOrdered
+
+def get_project_by_number(OBJ, NUMBER):
+	orderedItems = sorted(OBJ['projects'].items(), key=lambda x: x[1]["orderId"])
+	orderedItemsNameOnly = sorted(item[0] for item in orderedItems)
+	objectsToBeOrdered = []
+
+	for item in orderedItemsNameOnly:
 		tempObj = {}
 		tempObj['project'] = item
 		tempObj['date'] = OBJ['projects'][item]['time'][0]['end']
@@ -328,7 +352,7 @@ def get_project_by_number(OBJ, NUMBER):
 	
 	orderedProjects = sorted(objectsToBeOrdered, key = lambda i: i['date'])
 
-	selectedProject = orderedProjects[int(NUMBER) - 1]['project']
+	selectedProject = objectsToBeOrdered[int(NUMBER) - 1]['project']
 
 	return selectedProject
 
@@ -373,3 +397,90 @@ def dissolve_to_unique_dates(OBJ, KEY):
 		if n not in newList:
 			newList.append(n)
 	return newList
+
+def collect_projects_by_date(DATE, RECORD):
+	timeList = []
+	for item in RECORD['projects']:
+		for time in RECORD['projects'][item]['time']:
+			if time['spent_date'] == DATE:
+				tempObj = {}
+				tempObj['name'] = item
+				tempObj['time'] = time
+				timeList.append(tempObj)
+	# for item in timeList:
+
+def convert_spent_time(spent):
+    """Convert spent time from 'HH:MM' string to timedelta"""
+    hours, minutes = map(int, spent.split(':'))
+    return timedelta(hours=hours, minutes=minutes)
+
+def get_projects_and_time(DATE, RECORD):
+    projectsTime = {}
+    
+    for project, details in RECORD.items():
+        totalTime = timedelta()
+        for entry in details['time']:
+            if entry['spent_date'] == DATE:
+                totalTime += convert_spent_time(entry['spent'])
+        if totalTime:
+            projectsTime[project] = totalTime
+    
+    return projectsTime
+
+def get_chronological_entries(DATE, RECORD):
+    entries = []
+    
+    for project, details in RECORD.items():
+        for entry in details['time']:
+            if entry['spent_date'] == DATE:
+                entries.append({
+                    'project': project,
+                    'start': datetime.strptime(entry['start'], '%Y-%m-%d %H:%M'),
+                    'end': datetime.strptime(entry['end'], '%Y-%m-%d %H:%M'),
+                    'spent': convert_spent_time(entry['spent'])
+                })
+    
+    # Sort the entries by start time
+    sortedEntries = sorted(entries, key=lambda x: x['start'])
+    
+    return sortedEntries
+
+def format_date(date_str):
+    # Parse the date string to a datetime object
+    dateObj = datetime.strptime(date_str, '%Y-%m-%d')
+    
+    # Get the day with the appropriate suffix
+    day = dateObj.day
+    if 11 <= day <= 13:
+        suffix = 'th'
+    else:
+        suffix = {1: 'st', 2: 'nd', 3: 'rd'}.get(day % 10, 'th')
+    
+    # Format the datetime object to the desired string format
+    dateFormatted = dateObj.strftime(f"%A, %B {day}{suffix}")
+    return dateFormatted
+
+def format_date_and_year(date_str):
+    # Parse the date string to a datetime object
+    dateObj = datetime.strptime(date_str, '%Y-%m-%d')
+    
+    # Get the day with the appropriate suffix
+    day = dateObj.day
+    if 11 <= day <= 13:
+        suffix = 'th'
+    else:
+        suffix = {1: 'st', 2: 'nd', 3: 'rd'}.get(day % 10, 'th')
+    
+    # Format the datetime object to the desired string format
+    dateFormatted = dateObj.strftime(f"%A, %B {day}{suffix}")
+    yearFormatted = date_str.split('-')[0]
+    dateAndYearFormatted = dateFormatted + ', ' + yearFormatted
+    return dateAndYearFormatted
+
+def format_date_w_day(DATE):
+    # Parse the date string to a datetime object
+    dateObj = datetime.strptime(DATE, '%Y-%m-%d')
+    
+    # Format the datetime object to include the day of the week
+    dateFormatted = dateObj.strftime("%A, %Y-%m-%d")
+    return dateFormatted

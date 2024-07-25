@@ -9,7 +9,7 @@ def execute():
 	while True:
 		projectSelection = msg.select_project_for_times(record)
 
-		if projectSelection is 'x':
+		if projectSelection == 'x':
 			break
 
 		projectName = helpers.retrieve_project_name(projectSelection, helpers.project_list(record))
@@ -17,26 +17,25 @@ def execute():
 		totalTimeDict = helpers.calculate_total_time_daily(record['projects'][projectName]['time'])
 		totalTime = helpers.calculate_total_time(record['projects'][projectName]['time'])
 
-		print '''
+		print('''
 ===========================================
 
 {title} ({total})
 Description: {description}
 
 Breakdown by Day:
------------------'''.format(title=projectName, description=record['projects'][projectName]['description'], total=totalTime)
+-----------------'''.format(title=projectName, description=record['projects'][projectName]['description'], total=totalTime))
 		i = 0
 		for item in totalTimeDict:
 			if item['date'] == '':
 				item['date'] = "-- {} --".format(helpers.date_stamp())
 				item['spent'] = "currently tracking"
 			i += 1
-			print '''
+			print('''
 {itemNumber}.  Date:{date}
     Spent: {spent}
 
 ===========================================
-'''.format(itemNumber=i, date=item['date'], spent=item['spent'])
-	print
-	print '[Finished]'
-	print
+'''.format(itemNumber=i, date=item['date'], spent=item['spent']))
+	
+	msg.done()
