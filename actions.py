@@ -11,6 +11,7 @@ import AllTime
 import Status
 import Category
 import Archive
+import Edit
 # new imports start here
 
 # settings = helpers.get_settings()
@@ -43,9 +44,6 @@ elif action == "t":
 elif action == "u":
 	Untrack.execute()
 
-elif action == "test":
-	Test.execute()
-
 elif action == "l":
 	List.execute()
 
@@ -72,4 +70,7 @@ elif action == "c":
 
 elif action == "archive":
 	Archive.execute()
+
+elif action == "edit" or action == "E":
+	Edit.execute()
 # new actions start here

@@ -484,18 +484,26 @@ h1.page-title {
 
 #totalTimeWrapper {
     position: fixed;
-    top: 0;
+    top: 84px;
     margin: 0 auto;
     width: 1200px;
-    height: 150px;
+    height: 0;
     z-index: 20;
+}
+
+#totalTimeCapsule {
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 130px;
+    height: 50px;
     overflow: hidden;
 }
 
 #totalTimeSelected {
     position: absolute;
     right: 0;
-    top: 82px;
+    top: 0px;
     opacity: 0.5;
     width: 110px;
     height: 50px;
@@ -515,4 +523,35 @@ h1.page-title {
 
 .relative {
     position: relative;
+}
+
+.no-cat {
+    color: #00aace;
+}
+
+table#byCategory td:nth-child(1) {
+    width: 15%;
+    text-align: right;
+}
+table#byCategory td:nth-child(2) {
+    width: 11%;
+}
+table#byCategory td:nth-child(3) {
+    line-height: 1.5;
+}
+tfoot {
+    color: #eee;
+}
+.timeline {
+    position: relative;
+    width: 100%;
+    height: 20px;
+    background-color: rgba(0,0,0,0.1);
+}
+.entry {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 20px;
+    background-color: #43d7a596;
 }

@@ -1,8 +1,8 @@
 import messages as msg
 from datetime import datetime, timedelta
-import helpers, calendar, os
+import helpers, calendar, os, json
 
-# settings = helpers.get_settings()
+settings = helpers.get_settings()
 
 def execute():
 	recordPath = '{}/records/record.js'.format(helpers.path('util'))
@@ -18,6 +18,14 @@ def execute():
 		}
     }
 }'''
+
+	if 'blueprint' in settings:
+		projects = json.dumps(settings['blueprint'], sort_keys=True, indent=4)
+		indentedProjects = "\n".join("    " + line for line in projects.splitlines())
+		newDocSnippet = '''const data = {{
+    "current": "Dev Standup",
+    "projects": {}
+}}'''.format(indentedProjects)
 
 	if currDateStr.day <= 5:
 		firstDay = currDateStr.replace(day=1)

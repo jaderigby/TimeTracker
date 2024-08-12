@@ -172,5 +172,5 @@ to:    {TO}
 '''.format(
 	PROJECT = helpers.decorate('bold', entry['project']),
 	FROM = helpers.decorate('cyan', entry['start'].strftime('%H:%M')),
-	TO = helpers.decorate('cyan', entry['end'].strftime('%H:%M'))
+	TO = helpers.decorate('cyan', entry['end'].strftime('%H:%M')) if entry['end'] != 'Current' else  helpers.decorate('green', '** Current **')
 ))

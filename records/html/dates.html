@@ -11,14 +11,22 @@
         <panel-wrapper>
             <panel-inner class="light relative">
                 <div id="totalTimeWrapper">
-                    <div id="totalTimeSelected"></div>
+                    <div id="totalTimeCapsule">
+                        <div id="totalTimeSelected"></div>
+                    </div>
                 </div>
                 <div class="clear-wrap rack with-dividers nav-elements relative">
+                    <a href="dates.html">
+                        <span>By Date</span>
+                    </a>
+                    <a href="daily-breakdown.html">
+                        <span>By Time</span>
+                    </a>
                     <a href="projects.html">
                         <span>By Project</span>
                     </a>
-                    <a href="dates.html">
-                        <span>By Date</span>
+                    <a href="categories.html">
+                        <span>By Category</span>
                     </a>
                 </div>
                 <h1 class="page-title">TimeTracker:<span class="sub focal-color">Dates</span></h1>
@@ -50,17 +58,34 @@
             mark_current();
 
             const date = new Date();
-            const today = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
-            const currTime = `${date.getHours()}:${(date.getMinutes() < 10) ? '0' + date.getMinutes() : date.getMinutes()}`;
+            const monthDate = date.getMonth() + 1;
+            const dayDate = date.getDate();
+            const today = `${date.getFullYear()}-${(monthDate < 10) ? '0' + monthDate : monthDate}-${(dayDate < 10) ? '0' + dayDate : dayDate}`;
+            const currHours = date.getHours();
+            const currTime = `${(currHours < 10) ? '0' + currHours : currHours}:${(date.getMinutes() < 10) ? '0' + date.getMinutes() : date.getMinutes()}`;
+
+            function findTimeSpent(START, END) {
+                const startElem = START.split(':');
+                const endElem = END.split(':');
+                const s = `${parseInt(endElem[0]) - parseInt(startElem[0])}:${parseInt(endElem[1]) - parseInt(startElem[1])}`;
+                console.log(endElem[1]);
+                console.log(startElem[1]);
+                console.log(endElem[1] - startElem[1]);
+                return s;
+            }
+
+            function timeSpent(START, END) {
+                const startTime = START.replace(/[0-9]{4}\-[0-9]{2}\-[0-9]{2}\ /g, '');
+                const endTime = END.replace(/[0-9]{4}\-[0-9]{2}\-[0-9]{2}\ /g, '');
+                const calculatedTime = findTimeSpent(startTime, endTime);
+                return calculatedTime;
+            }
 
             data.projects[data.current].time.forEach(function(_time_) {
                 if (_time_.end == '') {
                     _time_.end = `${today} ${currTime}`;
                     _time_.spent_date = today;
-                    console.log(_time_.start);
-                    console.log(_time_.end);
-                    _time_.spent = time_spent(_time_.start, _time_.end);
-                    console.log(_time_);
+                    _time_.spent = timeSpent(_time_.start, _time_.end);
                 }
             });
 

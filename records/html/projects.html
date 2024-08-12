@@ -11,11 +11,17 @@
         <panel-wrapper>
             <panel-inner class="light">
                 <div class="clear-wrap rack with-dividers nav-elements">
+                    <a href="dates.html">
+                        <span>By Date</span>
+                    </a>
+                    <a href="daily-breakdown.html">
+                        <span>By Time</span>
+                    </a>
                     <a href="projects.html">
                         <span>By Project</span>
                     </a>
-                    <a href="dates.html">
-                        <span>By Date</span>
+                    <a href="categories.html">
+                        <span>By Category</span>
                     </a>
                 </div>
                 <h1 class="page-title">TimeTracker:<span class="sub focal-color">Projects</span></h1>
@@ -73,9 +79,13 @@
                     objectsToBeOrdered.push(tempObj);
                 });
 
-                objectsToBeOrdered.sort((a,b) =>  new Date(b.date) - new Date(a.date));
+                // objectsToBeOrdered.sort((a,b) =>  new Date(b.date) - new Date(a.date));
 
-                objectsToBeOrdered.reverse().forEach(function(_proj_, _index_) {
+                // objectsToBeOrdered.reverse().forEach(function(_proj_, _index_) {
+                //     data.projects[_proj_.project]['order'] = _index_ + 1;
+                // });
+
+                objectsToBeOrdered.forEach(function(_proj_, _index_) {
                     data.projects[_proj_.project]['order'] = _index_ + 1;
                 });
             }

@@ -86,9 +86,9 @@ def execute(ARGS):
 			msg.tracking_message(newItem, current)
 		
 		elif openTracking and newProject:
-			# tempObj['end'] = markedTime
-			# tempObj['spent'] = helpers.time_spent(tempObj['start'], tempObj['end'])
-			# tempObj['spent_date'] = markedDate
+			tempObj['end'] = markedTime
+			tempObj['spent'] = helpers.time_spent(tempObj['start'], tempObj['end'])
+			tempObj['spent_date'] = markedDate
 
 			newItem = helpers.new_time_obj(markedTime)
 			# record['projects'][current]['time'].append(tempObj)

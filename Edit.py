@@ -30,7 +30,19 @@ def execute():
 			chosenDate = datesListedOrdered[projectSelection['index']]
 			entries = helpers.get_chronological_entries(chosenDate, record['projects'])
 
-			msg.chrono_breakdown(chosenDate, entries)
+			timeObj = helpers.chrono_selection(chosenDate, entries)
+
+			for i, item in enumerate(record['projects'][timeObj['project']]['time']):
+				if item['start'] == timeObj['old']['start'] and item['end'] == timeObj['old']['end']:
+					record['projects'][timeObj['project']]['time'][i]['start'] = timeObj['new']['start']
+					record['projects'][timeObj['project']]['time'][i]['end'] = timeObj['new']['end']
+					record['projects'][timeObj['project']]['time'][i]['spent'] = timeObj['spent']
+					record['projects'][timeObj['project']]['time'][i]['spent_date'] = timeObj['spent_date']
+
+			# print(record['projects'][timeObj['project']])
+
+			helpers.write_file(helpers.recordPath, 'const data = ' + json.dumps(record, sort_keys=True, indent=4))
+
 			break
 
 	msg.done()

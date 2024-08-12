@@ -126,6 +126,54 @@ def user_selection(DESCRIPTION, LIST, LIST_SELECT = False):
 			print("\nPlease select a valid entry...")
 	return finalAnswer
 
+def detailed_user_selection(DESCRIPTION, LIST, LIST_SELECT = False):
+	import re
+	str = ''
+	for i, item in enumerate(LIST, start=1):
+		str += '\n[{index}] {item}'.format(index=i, item=item)
+	str += '\n\n[x] Exit\n'
+
+	finalAnswer = False
+
+	while True:
+		print(str)
+		selection = user_input('{}'.format(DESCRIPTION))
+		pat = re.compile("[0-9,\- ]+") if LIST_SELECT else re.compile("[0-9]+")
+		if pat.match(selection):
+			selection = list_expander(selection) if LIST_SELECT else int(selection)
+		if isinstance(selection, int) or isinstance(selection, list):
+			finalAnswer = selection
+			break
+		elif selection == 'x':
+			finalAnswer = 'exit'
+			break
+		elif selection == '':
+			finalAnswer = 'exit'
+			break
+		else:
+			print("\nPlease select a valid entry...")
+	
+	finalAnswerObj = {}
+	
+	if finalAnswer == 'exit':
+		return finalAnswer
+	
+	else:
+		if isinstance(finalAnswer, list):
+			finalAnswerObj = []
+			for item in finalAnswer:
+				tempObj = {}
+				tempObj['option'] = item
+				tempObj['index'] = item - 1
+				tempObj['value'] = LIST[item - 1]
+				finalAnswerObj.append(tempObj)
+		else:
+			finalAnswerObj['option'] = finalAnswer
+			finalAnswerObj['index'] = finalAnswer - 1
+			finalAnswerObj['value'] = LIST[finalAnswer - 1]
+
+		return finalAnswerObj
+
 def arguments(ARGS, DIVIDER=':'):
 	return dict(item.split('{}'.format(DIVIDER)) for item in ARGS)
 
@@ -439,6 +487,15 @@ def get_chronological_entries(DATE, RECORD):
                     'end': datetime.strptime(entry['end'], '%Y-%m-%d %H:%M'),
                     'spent': convert_spent_time(entry['spent'])
                 })
+            elif DATE in entry['start'] and entry['spent'] == '':
+                currentTime = time_stamp()
+                entry['spent'] = time_spent(entry['start'], currentTime)
+                entries.append({
+                    'project': project,
+                    'start': datetime.strptime(entry['start'], '%Y-%m-%d %H:%M'),
+                    'end': 'Current',
+                    'spent': convert_spent_time(entry['spent'])
+                })
     
     # Sort the entries by start time
     sortedEntries = sorted(entries, key=lambda x: x['start'])
@@ -484,3 +541,73 @@ def format_date_w_day(DATE):
     # Format the datetime object to include the day of the week
     dateFormatted = dateObj.strftime("%A, %Y-%m-%d")
     return dateFormatted
+
+def chrono_selection(DATE, DATA):
+	dateFormatted = format_date(DATE)
+	label = '''
+Chronological breakdown for {}:
+( {} )
+'''.format(decorate('yellow', dateFormatted), DATE)
+
+	print('{}'.format(label))
+	i = 0
+	for entry in DATA:
+		print('''
+[{i}] {PROJECT}
+-----------------------------
+from:  {FROM}
+to:    {TO}
+'''.format(
+	i = decorate('yellow', str(i + 1)),
+	PROJECT = decorate('bold', entry['project']),
+	FROM = decorate('cyan', entry['start'].strftime('%H:%M')),
+	TO = decorate('cyan', entry['end'].strftime('%H:%M')) if entry['end'] != 'Current' else decorate('green', '** Current **')
+))
+		i += 1
+
+	print('\n[x] Exit\n')
+	selection = int(user_input('Select: '))
+	selectionObj = DATA[selection - 1]
+
+	print("\n\n\nYou have selected:")
+	print('''
+{PROJECT}
+-----------------------------
+from:  {FROM}
+to:    {TO}
+'''.format(
+	PROJECT = decorate('bold', selectionObj['project']),
+	FROM = decorate('cyan', selectionObj['start'].strftime('%H:%M')),
+	TO = decorate('cyan', selectionObj['end'].strftime('%H:%M')) 
+))
+	newTime = user_input('\nEnter new Time as comma seperated values "from,to",\nsuch as "8:00,9:00".\n\nUse "0" for any unchanged value, such as "0,9:00"\nto only change the "to" value, for example\n\n{} '.format(decorate('bold', 'New times:'))).split(',')
+	
+	tempObj = {}
+	tempObj['old'] = {}
+	tempObj['new'] = {}
+	tempObj['old']['start'] = '{} {}'.format(
+		selectionObj['start'].strftime('%Y-%m-%d'),
+		selectionObj['start'].strftime('%H:%M')
+	)
+	tempObj['old']['end'] = '{} {}'.format(
+		selectionObj['end'].strftime('%Y-%m-%d'),
+		selectionObj['end'].strftime('%H:%M')
+	)
+	tempObj['project'] = selectionObj['project']
+	tempObj['spent_date'] = DATE
+	tempObj['new']['start'] = '{} {}'.format(
+		selectionObj['start'].strftime('%Y-%m-%d'),
+		newTime[0] if newTime[0] != '0' else selectionObj['start'].strftime('%H:%M')
+	)
+	tempObj['new']['end'] = '{} {}'.format(
+		selectionObj['end'].strftime('%Y-%m-%d'),
+		newTime[1] if newTime[1] != '0' else selectionObj['end'].strftime('%H:%M')
+	)
+	tempObj['spent'] = time_spent(tempObj['new']['start'], tempObj['new']['end'])
+
+	print(selectionObj)
+	print(tempObj)
+
+	
+	return tempObj
+	

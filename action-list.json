@@ -32,7 +32,7 @@
         },
         {
             "name": "T",
-            "description": "List times by date selection"
+            "description": "List times for the day, by date selection"
         },
         {
             "name": "all",
@@ -41,6 +41,14 @@
         {
             "name": "c",
             "description": "Show total times by category"
+        },
+        {
+            "name": "edit",
+            "description": "Select an entry to edit; Uses the pattern '0,9:00' where a comma seperates\n\t\t\tthe 'from' and 'to' entries.  Note that '0' represents 'no change'"
+        },
+        {
+            "name": "E",
+            "description": "shortcut for 'edit'"
         }
     ]
 }
